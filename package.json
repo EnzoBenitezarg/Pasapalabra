@@ -1,0 +1,48 @@
+{
+  "name": "pasapalabra-politica-argentina",
+  "version": "1.0.0",
+  "description": "Juego educativo interactivo de Pasapalabra sobre política argentina con ruleta profesional, sistema de autenticación y ranking online",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
+    "test": "echo \"No tests specified\" && exit 0",
+    "lint": "echo \"No linting configured\" && exit 0"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "sqlite3": "^5.1.6",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "juego",
+    "educativo", 
+    "politica",
+    "argentina",
+    "pasapalabra",
+    "ruleta",
+    "interactivo",
+    "web-game",
+    "nodejs",
+    "express",
+    "sqlite"
+  ],
+  "author": "Enzo Benitez",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usuario/pasapalabra-politica-argentina.git"
+  },
+  "bugs": {
+    "url": "https://github.com/usuario/pasapalabra-politica-argentina/issues"
+  },
+  "homepage": "https://github.com/usuario/pasapalabra-politica-argentina#readme"
+}

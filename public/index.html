@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pasapalabra Política Argentina</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Pantalla de Inicio -->
+    <div id="startScreen" class="screen active">
+        <div class="container">
+            <h1 class="title">
+                <span class="title-main">Pasapalabra</span>
+                <span class="title-sub">Política Argentina</span>
+            </h1>
+            <p class="subtitle">Demuestra tus conocimientos sobre política argentina</p>
+            
+            <!-- Información del usuario logueado -->
+            <div id="userWelcome" class="user-welcome" style="display: none;">
+                <span class="welcome-text">¡Bienvenido, <span id="welcomeUsername"></span>!</span>
+            </div>
+            
+            <!-- Botones principales -->
+            <div class="main-buttons">
+                <button id="startBtn" class="btn btn-primary">
+                    <span>🎯 Comenzar Juego</span>
+                </button>
+                <button id="rankingBtn" class="btn btn-secondary" style="display: none;">
+                    <span>🏆 Ver Ranking</span>
+                </button>
+            </div>
+            
+            <!-- Botones secundarios -->
+            <div class="secondary-buttons">
+                <button id="profileBtn" class="btn btn-outline" style="display: none;">
+                    <span>👤 Perfil</span>
+                </button>
+                <button id="instructionsBtn" class="btn btn-outline">
+                    <span>📖 Instrucciones</span>
+                </button>
+                <button id="settingsBtn" class="btn btn-outline" style="display: none;">
+                    <span>⚙️ Ajustes</span>
+                </button>
+            </div>
+            
+            <!-- Botón de cerrar sesión (solo visible cuando está logueado) -->
+            <div class="logout-section">
+                <button id="logoutMainBtn" class="btn btn-danger" style="display: none;">
+                    <span>🚪 Cerrar Sesión</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Login/Registro -->
+    <div id="authScreen" class="screen">
+        <div class="container">
+            <h2 id="authTitle">🔐 Iniciar Sesión</h2>
+            
+            <div id="loginForm" class="auth-form">
+                <div class="input-group">
+                    <label for="loginUsername">Usuario:</label>
+                    <input type="text" id="loginUsername" placeholder="Ingresa tu nombre de usuario" maxlength="20">
+                </div>
+                <div class="input-group">
+                    <label for="loginPassword">Contraseña:</label>
+                    <input type="password" id="loginPassword" placeholder="Ingresa tu contraseña">
+                </div>
+                <button id="loginBtn" class="btn btn-primary">Iniciar Sesión</button>
+                <p class="auth-switch">
+                    ¿No tienes cuenta? 
+                    <a href="#" id="showRegisterBtn">Regístrate aquí</a>
+                </p>
+            </div>
+
+            <div id="registerForm" class="auth-form" style="display: none;">
+                <div class="input-group">
+                    <label for="registerUsername">Usuario:</label>
+                    <input type="text" id="registerUsername" placeholder="Elige un nombre de usuario" maxlength="20">
+                </div>
+                <div class="input-group">
+                    <label for="registerPassword">Contraseña:</label>
+                    <input type="password" id="registerPassword" placeholder="Crea una contraseña segura">
+                </div>
+                <div class="input-group">
+                    <label for="confirmPassword">Confirmar Contraseña:</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirma tu contraseña">
+                </div>
+                <button id="registerBtn" class="btn btn-primary">Registrarse</button>
+                <p class="auth-switch">
+                    ¿Ya tienes cuenta? 
+                    <a href="#" id="showLoginBtn">Inicia sesión aquí</a>
+                </p>
+            </div>
+
+            <button id="backToStartBtn" class="btn btn-secondary">Volver al Inicio</button>
+        </div>
+    </div>
+
+    <!-- Pantalla de Juego -->
+    <div id="gameScreen" class="screen">
+        <div class="game-header">
+            <!-- Fila superior: Navegación y Timer -->
+            <div class="game-header-top">
+                <button id="backToMenuFromGame" class="btn btn-menu-back">
+                    <span class="btn-icon">🏠</span>
+                    <span class="btn-text">Menú</span>
+                </button>
+                <div class="game-timer" id="gameTimer" style="display: none;">
+                    <span class="timer-icon">⏱️</span>
+                    <span id="timerDisplay">00:00</span>
+                </div>
+            </div>
+            
+            <!-- Fila de información del juego -->
+            <div class="game-info-row">
+                <div class="score-info">
+                    <div class="score-item">
+                        <span class="score-icon">💰</span>
+                        <span class="score-label">Puntos:</span>
+                        <span class="score-value" id="currentScore">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-icon">📝</span>
+                        <span class="score-label">Pregunta:</span>
+                        <span class="score-value"><span id="questionNumber">1</span>/26</span>
+                    </div>
+                    <div class="score-item streak-item" id="streakCounter" style="display: none;">
+                        <span class="score-icon">�</spanp>
+                        <span class="score-label">Racha:</span>
+                        <span class="score-value" id="currentStreak">0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila de comodines -->
+            <div class="wildcards-row">
+                <div class="wildcards-label">Comodines disponibles:</div>
+                <div class="wildcard-container">
+                    <button id="wildcard1" class="wildcard-btn active" data-tooltip="Obtener pista útil">
+                        <span class="wildcard-icon">💡</span>
+                        <span class="wildcard-label">Pista 1</span>
+                    </button>
+                    <button id="wildcard2" class="wildcard-btn active" data-tooltip="Obtener pista útil">
+                        <span class="wildcard-icon">💡</span>
+                        <span class="wildcard-label">Pista 2</span>
+                    </button>
+                    <button id="wildcard3" class="wildcard-btn active" data-tooltip="Obtener pista útil">
+                        <span class="wildcard-icon">💡</span>
+                        <span class="wildcard-label">Pista 3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-content">
+            <div class="roulette-container">
+                <div class="roulette-wrapper">
+                    <div class="roulette-pointer"></div>
+                    <div id="roulette" class="roulette">
+                        <svg class="roulette-svg" viewBox="0 0 400 400">
+                            <g id="rouletteWheel" class="wheel">
+                                <!-- Los segmentos se generarán dinámicamente con JavaScript -->
+                            </g>
+                        </svg>
+                        <div class="roulette-center">
+                            <button id="spinBtn" class="spin-button">
+                                <span class="spin-text">GIRAR</span>
+                                <div class="spin-icon">🎯</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-display">
+                    <div class="result-label">Letra seleccionada:</div>
+                    <div id="selectedLetter" class="selected-letter">-</div>
+                </div>
+            </div>
+
+            <div class="question-section">
+                <div class="question-card">
+                    <p id="questionText">Presiona "Girar Ruleta" para comenzar</p>
+                </div>
+                
+                <div class="answer-section">
+                    <div class="word-pattern" id="wordPattern" style="display: none;">
+                        <div class="pattern-label">Palabra a completar:</div>
+                        <div class="pattern-display" id="patternDisplay">_ _ _ _ _ _ _</div>
+                    </div>
+                    <div class="hint-display" id="hintDisplay" style="display: none;">
+                        <div class="hint-icon">💡</div>
+                        <div class="hint-text" id="hintText"></div>
+                    </div>
+                    <input type="text" id="answerInput" placeholder="Escribe tu respuesta..." disabled>
+                    <button id="submitBtn" class="btn btn-submit" disabled>Responder</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Perfil -->
+    <div id="profileScreen" class="screen">
+        <div class="container">
+            <h2>👤 Mi Perfil</h2>
+            <div class="profile-content">
+                <div class="profile-info">
+                    <div class="profile-avatar">
+                        <span id="profileAvatar">👤</span>
+                    </div>
+                    <div class="profile-details">
+                        <h3 id="profileUsername">Usuario</h3>
+                        <p class="profile-member-since">Miembro desde: <span id="memberSince">-</span></p>
+                    </div>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalGames">0</div>
+                        <div class="stat-label">Partidas Jugadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="bestScore">0</div>
+                        <div class="stat-label">Mejor Puntuación</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="averageScore">0</div>
+                        <div class="stat-label">Promedio</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="currentRank">-</div>
+                        <div class="stat-label">Posición Actual</div>
+                    </div>
+                </div>
+                
+                <div class="recent-games">
+                    <h4>🎮 Partidas Recientes</h4>
+                    <div id="recentGamesList" class="recent-games-list">
+                        <div class="loading">Cargando historial...</div>
+                    </div>
+                </div>
+            </div>
+            <button id="backToMenuFromProfile" class="btn btn-secondary">Volver al Menú</button>
+        </div>
+    </div>
+
+    <!-- Pantalla de Instrucciones -->
+    <div id="instructionsScreen" class="screen">
+        <div class="container">
+            <h2>📖 Instrucciones del Juego</h2>
+            <div class="instructions-content">
+                <div class="instruction-section">
+                    <h3>🎯 Objetivo</h3>
+                    <p>Responde correctamente las 26 preguntas sobre política argentina (una por cada letra del alfabeto) para obtener la mayor puntuación posible.</p>
+                </div>
+                
+                <div class="instruction-section">
+                    <h3>🎮 Cómo Jugar</h3>
+                    <ol>
+                        <li><strong>Gira la ruleta:</strong> Presiona el botón "GIRAR" en el centro de la ruleta</li>
+                        <li><strong>Lee la pregunta:</strong> Aparecerá automáticamente según la letra seleccionada</li>
+                        <li><strong>Observa las pistas:</strong> Los guiones bajos muestran la cantidad de letras</li>
+                        <li><strong>Escribe tu respuesta:</strong> En el campo de texto disponible</li>
+                        <li><strong>Usa comodines:</strong> Máximo 3 por partida para obtener pistas adicionales</li>
+                        <li><strong>Envía tu respuesta:</strong> Presiona "Responder" o la tecla Enter</li>
+                    </ol>
+                </div>
+                
+                <div class="instruction-section">
+                    <h3>📊 Sistema de Puntuación</h3>
+                    <ul>
+                        <li><strong>Respuesta correcta:</strong> 100 puntos base</li>
+                        <li><strong>Bonus por velocidad:</strong> +10 puntos si respondes en menos de 10 segundos</li>
+                        <li><strong>Bonus por racha:</strong> +5 puntos adicionales por cada respuesta consecutiva correcta</li>
+                        <li><strong>Penalización por comodín:</strong> -20 puntos por cada comodín usado</li>
+                    </ul>
+                </div>
+                
+                <div class="instruction-section">
+                    <h3>💡 Tipos de Comodines</h3>
+                    <ul>
+                        <li><strong>Pista de letra inicial:</strong> "Empieza con la letra X"</li>
+                        <li><strong>Pista de categoría:</strong> "Es un tipo de poder del Estado"</li>
+                        <li><strong>Pista de longitud:</strong> "Tiene X letras"</li>
+                        <li><strong>Revelar letra:</strong> Muestra una letra aleatoria en su posición</li>
+                    </ul>
+                </div>
+                
+                <div class="instruction-section">
+                    <h3>🏆 Ranking</h3>
+                    <p>Tu puntuación se guarda automáticamente al finalizar la partida. Compite por llegar al Top 10 y obtener las medallas de oro, plata y bronce.</p>
+                </div>
+            </div>
+            <button id="backToMenuFromInstructions" class="btn btn-secondary">Volver al Menú</button>
+        </div>
+    </div>
+
+    <!-- Pantalla de Ajustes -->
+    <div id="settingsScreen" class="screen">
+        <div class="container">
+            <h2>⚙️ Ajustes</h2>
+            <div class="settings-content">
+                <div class="setting-group">
+                    <h3>🔊 Audio</h3>
+                    <div class="setting-item">
+                        <label for="soundEffects">Efectos de sonido:</label>
+                        <input type="checkbox" id="soundEffects" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                    <div class="setting-item">
+                        <label for="backgroundMusic">Música de fondo:</label>
+                        <input type="checkbox" id="backgroundMusic">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <h3>🎮 Juego</h3>
+                    <div class="setting-item">
+                        <label for="showTimer">Mostrar cronómetro:</label>
+                        <input type="checkbox" id="showTimer" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                    <div class="setting-item">
+                        <label for="autoSave">Guardado automático:</label>
+                        <input type="checkbox" id="autoSave" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <h3>🎨 Apariencia</h3>
+                    <div class="setting-item">
+                        <label for="darkMode">Modo oscuro:</label>
+                        <input type="checkbox" id="darkMode">
+                        <span class="toggle-slider"></span>
+                    </div>
+                    <div class="setting-item">
+                        <label for="animations">Animaciones:</label>
+                        <input type="checkbox" id="animations" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <h3>📊 Datos</h3>
+                    <button id="exportData" class="btn btn-outline">📤 Exportar Datos</button>
+                    <button id="resetStats" class="btn btn-danger">🗑️ Resetear Estadísticas</button>
+                </div>
+            </div>
+            <button id="backToMenuFromSettings" class="btn btn-secondary">Volver al Menú</button>
+        </div>
+    </div>
+
+    <!-- Pantalla de Ranking -->
+    <div id="rankingScreen" class="screen">
+        <div class="container">
+            <h2>🏆 Ranking de Jugadores</h2>
+            <div class="ranking-filters">
+                <button id="filterAll" class="filter-btn active">Todos</button>
+                <button id="filterWeek" class="filter-btn">Esta Semana</button>
+                <button id="filterMonth" class="filter-btn">Este Mes</button>
+            </div>
+            <div id="rankingTable" class="ranking-table">
+                <div class="loading">Cargando ranking...</div>
+            </div>
+            <button id="backToMenuBtn" class="btn btn-secondary">Volver al Menú</button>
+        </div>
+    </div>
+
+    <!-- Pantalla Final -->
+    <div id="endScreen" class="screen">
+        <div class="container">
+            <h2>🎉 ¡Juego Terminado!</h2>
+            <div class="final-score">
+                <p>Tu puntuación final:</p>
+                <span id="finalScore" class="score-big">0</span>
+                <p>puntos</p>
+            </div>
+            
+            <div class="player-form">
+                <input type="text" id="playerName" placeholder="Ingresa tu nombre" maxlength="20">
+                <button id="saveScoreBtn" class="btn btn-primary">Guardar Puntuación</button>
+            </div>
+            
+            <div class="end-buttons">
+                <button id="playAgainBtn" class="btn btn-primary">Jugar de Nuevo</button>
+                <button id="viewRankingBtn" class="btn btn-secondary">Ver Ranking</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Feedback -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <div id="feedbackContent"></div>
+        </div>
+    </div>
+
+    <script src="js/game.js"></script>
+</body>
+</html>
