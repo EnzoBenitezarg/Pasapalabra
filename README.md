@@ -1,4 +1,4 @@
-##Un juego web tipo Pasapalabra pero de política argentina.
+## Un juego web tipo Pasapalabra pero de política argentina.
 
 ## ¿Qué es esto?
 
